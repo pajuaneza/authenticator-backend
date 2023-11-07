@@ -3,3 +3,4 @@ GET    /employees     controllers.HomeController.getAllEmployees()
 
 POST   /employee-add        controllers.HomeController.addEmployee()
 POST   /employee-login      controllers.HomeController.login()
+POST   /employee-logout      controllers.HomeController.logout()

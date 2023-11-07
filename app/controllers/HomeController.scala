@@ -74,4 +74,8 @@ class HomeController @Inject()(
       }
     )
   }
+
+  def logout() = authenticator { implicit request =>
+    Ok("Logged out!").withNewSession
+  }
 }
