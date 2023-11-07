@@ -6,16 +6,6 @@ import play.api.mvc._
 import scala.concurrent._
 import scala.concurrent.Future
 
-// class UserRequest[A](val username: Option[String], request: Request[A]) extends WrappedRequest[A](request)
-
-// class UserAction @Inject() (val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext)
-//     extends ActionBuilder[UserRequest, AnyContent]
-//     with ActionTransformer[Request, UserRequest] {
-//   def transform[A](request: Request[A]) = Future.successful {
-//     new UserRequest(request.session.get("username"), request)
-//   }
-// }
-
 trait UserComponent {
   def username: String
   def password: String
@@ -26,14 +16,6 @@ case class User(val username: String, val password: String)
 
 class UserRequest[A](val user: Option[User], request: Request[A])
     extends WrappedRequest[A](request)
-
-// class UserAction @Inject() (val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext)
-//     extends ActionBuilder[UserRequest, AnyContent]
-//     with ActionTransformer[Request, UserRequest] {
-//   def transform[A](request: Request[A]) = Future.successful {
-//     new UserRequest(request.session.get("username"), request)
-//   }
-// }
 
 @Singleton
 class Authenticator @Inject() (parser: BodyParsers.Default)(implicit
