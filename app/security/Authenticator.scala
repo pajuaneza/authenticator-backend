@@ -20,9 +20,8 @@ class UserRequest[A](val user: Option[User], request: Request[A])
 @Singleton
 class Authenticator @Inject() (parser: BodyParsers.Default)(implicit
   ec: ExecutionContext
-) extends ActionBuilder[UserRequest, AnyContent] {
-  val logger = Logger(this.getClass)
-
+) extends ActionBuilder[UserRequest, AnyContent]
+    with Logging {
   def parser: BodyParser[AnyContent] = parser
 
   protected def executionContext: ExecutionContext = ec
