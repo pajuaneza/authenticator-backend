@@ -4,20 +4,21 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import models.repo.EmpRepo
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent._
 import play.api.libs.json._
 import models.domain.Emp
 import play.api.data.Form
 import play.api.data.Forms._
 import java.util.UUID
 import security.Authenticator
+import security.UserRequest
 
 @Singleton
 class HomeController @Inject()(
   authenticator: Authenticator,
   val empRepo: EmpRepo,
-  val controllerComponents: ControllerComponents
-)(implicit val ec: ExecutionContext) extends BaseController {
+  val cc: ControllerComponents
+)(implicit val ec: ExecutionContext) extends AbstractController(cc) {
 
   val empForm = Form(
     mapping(
@@ -65,7 +66,8 @@ class HomeController @Inject()(
       credentials => {
         empRepo.findEmployeeByUsernameAndPassword(credentials._1, credentials._2).map { employee =>
           employee match {
-            case Some(em) => Ok(Json.toJson(em))
+            case Some(em) =>
+              Ok(Json.toJson(em)).withSession("username" -> em.username)
             case None => Unauthorized
           }
         }
